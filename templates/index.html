@@ -1,12 +1,35 @@
 <html>
+	<head>
+		<script type="text/javascript" src="static/js/jquery-1.6.1.min.js"></script>
+		<script type="text/javascript" src="static/js/jquery.rating.js"></script>
+		<link rel="stylesheet" media="screen" type="text/css" href="static/css/jquery.rating.css" />
+		<script type="text/javascript">
+			$(document).ready(function(){
+				//Turn all the select boxes into rating controls
+				$(".rating").rating({showCancel:false});
+			});
+		</script>
+
+	</head>
 	<body>
+		<form>
 		{% for area in areas %}
 		<h3>{{ area.name }}</h3>
-		<ul>
 			{% for trail in area.trail_set %}
-			<li>{{ trail.name }}</li>
+			<table>
+				<td>{{ trail.name }}</td>
+				<td>
+				<select class="rating" id="trail_{{ trail.key }}"> 
+					<option value="0">0</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+				</select>
+				</td>
+			</rable>
 			{% endfor %}
-		</ul>
 		{% endfor %}
+		</form>
 	</body>
 </html>
