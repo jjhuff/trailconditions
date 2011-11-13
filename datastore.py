@@ -23,3 +23,8 @@ class Area(db.Model):
 class Trail(db.Model):
     area = db.ReferenceProperty(Area, required=True)
     name = db.StringProperty(required=True)
+
+class Rating(db.Model):
+    trail = db.ReferenceProperty(Trail, required=True)
+    rating = db.IntegerProperty(required=True)
+    timestamp = db.DateTimeProperty(auto_now=True, auto_now_add=True)

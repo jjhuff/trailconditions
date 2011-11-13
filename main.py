@@ -32,9 +32,20 @@ class MainPage(webapp.RequestHandler):
                 }
         self.response.out.write(template.render('templates/index.html', template_values))
 
+class AddRating(webapp.RequestHandler):
+    def post(self):
+        rating = datastore.Rating(
+                trail = datastore.Trail.get(self.request.get('trail_id')),
+                rating = int(self.request.get('trail_rating')))
+        rating.put()
+        self.response.out.write(rating.key())
+                
+        
+
 application = webapp.WSGIApplication([
         ('/', MainPage),
-        ('/admin', admin.Admin)
+        ('/admin', admin.Admin),
+        ('/addrating', AddRating)
     ],debug=True)
 
 def main():
