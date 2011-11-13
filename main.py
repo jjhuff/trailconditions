@@ -39,6 +39,18 @@ class AddRating(webapp.RequestHandler):
                 rating = int(self.request.get('trail_rating')))
         rating.put()
         self.response.out.write(rating.key())
+
+        # Update all ratings
+        for trail in datastore.Trail.all():
+            ratings = datastore.Rating.all().filter('trail =', trail.key()).order('-timestamp')
+            total=0
+            count=0
+            for rating in ratings:
+                total += rating.rating
+                count += 1
+            if count > 0:
+                trail.current_rating=float(total)/count
+                trail.put()
                 
         
 

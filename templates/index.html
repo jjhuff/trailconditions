@@ -24,7 +24,7 @@
 		<th align='left'>{{ area.name }}</th>
 			{% for trail in area.trail_set %}
 				<tr>
-				<td>{{ trail.name }}</td>
+				<td>{{ trail.name }} {{ trail.current_rating }}</td>
 				<td>
 				<select class="rating" trail_id="{{ trail.key }}"> 
 					<option value="0">0</option>
