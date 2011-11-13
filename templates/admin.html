@@ -1,0 +1,21 @@
+<html>
+	<body>
+		<h3>Admin Page</h3>
+		<form method='POST'>
+			<h4>Add Area</h4>
+			<b>Name:</b> <input type='text' name='area_name'><br>
+			<b>Map URL:</b> <input type='text' name='area_map_url'><br>
+			<input type='submit' name='action' value='Add Area'>
+
+			<h4>Add Trail</h4>
+			<b>Area:</b>
+			<select name='trail_area_id'>
+				{% for area in areas %}
+				<option value='{{ area.key }}'>{{ area.name }}</option>
+				{% endfor %}
+			</select> <br>
+			<b>Name:</b><input type='text' name='trail_name'><br>
+			<input type='submit' name='action' value='Add Trail'>
+		</form>
+	</body>
+</html>

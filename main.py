@@ -14,16 +14,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+from google.appengine.dist import use_library
+use_library('django', '1.2')
+
 from google.appengine.ext import webapp
+from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
+
+import admin
+import datastore
 
 class MainPage(webapp.RequestHandler):
     def get(self):
-        self.response.out.write('Hello world!')
+        template_values={
+                'areas': datastore.Area.all()
+                }
+        self.response.out.write(template.render('templates/index.html', template_values))
 
-application = webapp.WSGIApplication(
-                                     [('/', MainPage)],
-                                     debug=True)
+application = webapp.WSGIApplication([
+        ('/', MainPage),
+        ('/admin', admin.Admin)
+    ],debug=True)
 
 def main():
     run_wsgi_app(application)

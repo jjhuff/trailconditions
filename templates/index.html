@@ -1,0 +1,12 @@
+<html>
+	<body>
+		{% for area in areas %}
+		<h3>{{ area.name }}</h3>
+		<ul>
+			{% for trail in area.trail_set %}
+			<li>{{ trail.name }}</li>
+			{% endfor %}
+		</ul>
+		{% endfor %}
+	</body>
+</html>
