@@ -28,7 +28,8 @@ import datastore
 class MainPage(webapp.RequestHandler):
     def get(self):
         template_values={
-                'areas': datastore.Area.all()
+                'areas': datastore.Area.all(),
+                'stars': range(0,5)
                 }
         self.response.out.write(template.render('templates/index.html', template_values))
 
@@ -49,7 +50,7 @@ class AddRating(webapp.RequestHandler):
                 total += rating.rating
                 count += 1
             if count > 0:
-                trail.current_rating=float(total)/count
+                trail.current_rating=round(float(total)/count)
                 trail.put()
                 
         

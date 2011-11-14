@@ -24,14 +24,16 @@
 		<th align='left'>{{ area.name }}</th>
 			{% for trail in area.trail_set %}
 				<tr>
-				<td>{{ trail.name }} {{ trail.current_rating }}</td>
+				<td>{{ trail.name }}</td>
 				<td>
-				<select class="rating" trail_id="{{ trail.key }}"> 
-					<option value="0">0</option>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
+					<select class="rating" trail_id="{{ trail.key }}"> 
+					{% for n in stars %}
+						{% if trail.current_rating == n %}
+							<option value="{{ n }}" selected>{{ n }}</option>
+						{% else %}
+							<option value="{{ n }}">{{ n }}</option>
+						{% endif %}
+					{% endfor %}
 				</select>
 				</td>
 				</tr>
