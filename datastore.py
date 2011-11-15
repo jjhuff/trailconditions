@@ -24,6 +24,7 @@ class Trail(db.Model):
     area = db.ReferenceProperty(Area, required=True)
     name = db.StringProperty(required=True)
     current_rating = db.FloatProperty()
+    current_rating_count = db.IntegerProperty()
 
 class Rating(db.Model):
     trail = db.ReferenceProperty(Trail, required=True)

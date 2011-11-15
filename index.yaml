@@ -14,4 +14,9 @@ indexes:
   properties:
   - name: trail
   - name: timestamp
+
+- kind: Rating
+  properties:
+  - name: trail
+  - name: timestamp
     direction: desc

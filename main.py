@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import datetime
 
 from google.appengine.dist import use_library
 use_library('django', '1.2')
@@ -35,23 +36,27 @@ class MainPage(webapp.RequestHandler):
 
 class AddRating(webapp.RequestHandler):
     def post(self):
+        trail = datastore.Trail.get(self.request.get('trail_id'))
         rating = datastore.Rating(
-                trail = datastore.Trail.get(self.request.get('trail_id')),
+                trail = trail,
                 rating = int(self.request.get('trail_rating')))
         rating.put()
         self.response.out.write(rating.key())
 
-        # Update all ratings
-        for trail in datastore.Trail.all():
-            ratings = datastore.Rating.all().filter('trail =', trail.key()).order('-timestamp')
-            total=0
-            count=0
-            for rating in ratings:
-                total += rating.rating
-                count += 1
-            if count > 0:
-                trail.current_rating=round(float(total)/count)
-                trail.put()
+        # Update the ratings
+        min_time = datetime.datetime.now() - datetime.timedelta(days=2)
+        ratings = datastore.Rating.all().filter('trail =', trail.key()).filter('timestamp >', min_time)
+        total=0
+        count=0
+        for rating in ratings:
+            total += rating.rating
+            count += 1
+        if count > 0:
+            trail.current_rating = round(float(total)/count)
+        else:
+            trail.current_rating = -1.0
+        trail.current_rating_count = count
+        trail.put()
                 
         
 
