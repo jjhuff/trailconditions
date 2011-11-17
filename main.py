@@ -49,13 +49,24 @@ class UpdateRatings(webapp.RequestHandler):
     def get(self):
         for trail in datastore.Trail.all():
             datastore.UpdateRatings(trail)
-        
+
+class Ratings(webapp.RequestHandler):
+    def get(self):
+        trail = datastore.Trail.get(self.request.get('trail_id'))
+        template_values={
+                'trail': trail,
+                'ratings': trail.rating_set.order('-timestamp'),
+                'stars': range(0,5)
+                }
+        self.response.out.write(template.render('templates/ratings.html', template_values))
+
 
 application = webapp.WSGIApplication([
         ('/', MainPage),
         ('/admin', admin.Admin),
         ('/addrating', AddRating),
         ('/updateratings', UpdateRatings),
+        ('/ratings', Ratings),
     ],debug=True)
 
 def main():

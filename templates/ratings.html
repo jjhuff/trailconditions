@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<script type="text/javascript" src="static/js/jquery-1.6.1.min.js"></script>
+		<script type="text/javascript" src="static/js/jquery.rating.js"></script>
+		<link rel="stylesheet" media="screen" type="text/css" href="static/css/jquery.rating.css" />
+		<script type="text/javascript">
+		$(document).ready(function(){
+			//Turn all the select boxes into rating controls
+			$(".rating").rating({showCancel:false, disabled:true});
+		});
+		</script>
+
+	</head>
+	<body>
+		<a href="/">Trails</a>
+		<table>
+		<th align='left'>{{ trail.name }}</th>
+		{% for rating in ratings %}
+			<tr>
+			<td>{{ rating.timestamp }}</td>
+			<td>
+				<select class="rating" trail_id="{{ trail.key }}"> 
+				{% for n in stars %}
+					{% if rating.rating == n %}
+						<option value="{{ n }}" selected>{{ n }}</option>
+					{% else %}
+						<option value="{{ n }}">{{ n }}</option>
+					{% endif %}
+				{% endfor %}
+			</select>
+			</td>
+			</tr>
+		{% endfor %}
+		</table>
+	</body>
+</html>
