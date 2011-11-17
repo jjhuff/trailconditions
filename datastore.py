@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 
+import datetime
 from google.appengine.ext import db
 
 class Area(db.Model):
@@ -30,3 +31,18 @@ class Rating(db.Model):
     trail = db.ReferenceProperty(Trail, required=True)
     rating = db.IntegerProperty(required=True)
     timestamp = db.DateTimeProperty(auto_now=True, auto_now_add=True)
+
+def UpdateRatings(trail):
+    min_time = datetime.datetime.now() - datetime.timedelta(days=2)
+    ratings = Rating.all().filter('trail =', trail.key()).filter('timestamp >', min_time)
+    total=0
+    count=0
+    for rating in ratings:
+        total += rating.rating
+        count += 1
+    if count > 0:
+        trail.current_rating = round(float(total)/count)
+    else:
+        trail.current_rating = -1.0
+    trail.current_rating_count = count
+    trail.put()

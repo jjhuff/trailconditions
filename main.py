@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import datetime
 
 from google.appengine.dist import use_library
 use_library('django', '1.2')
@@ -44,26 +43,19 @@ class AddRating(webapp.RequestHandler):
         self.response.out.write(rating.key())
 
         # Update the ratings
-        min_time = datetime.datetime.now() - datetime.timedelta(days=2)
-        ratings = datastore.Rating.all().filter('trail =', trail.key()).filter('timestamp >', min_time)
-        total=0
-        count=0
-        for rating in ratings:
-            total += rating.rating
-            count += 1
-        if count > 0:
-            trail.current_rating = round(float(total)/count)
-        else:
-            trail.current_rating = -1.0
-        trail.current_rating_count = count
-        trail.put()
-                
+        datastore.UpdateRatings(trail)
+
+class UpdateRatings(webapp.RequestHandler):
+    def get(self):
+        for trail in datastore.Trail.all():
+            datastore.UpdateRatings(trail)
         
 
 application = webapp.WSGIApplication([
         ('/', MainPage),
         ('/admin', admin.Admin),
-        ('/addrating', AddRating)
+        ('/addrating', AddRating),
+        ('/updateratings', UpdateRatings),
     ],debug=True)
 
 def main():

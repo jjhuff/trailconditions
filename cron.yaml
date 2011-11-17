@@ -1,0 +1,4 @@
+cron:
+- description: Update all trail ratings
+  url: /updateratings
+  schedule: every 10 minutes
